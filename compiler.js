@@ -9,6 +9,16 @@ function lexer(input){
             cursor++;
             continue;
         }
+        if(/[a-zA-Z]/.test(char)){
+            let word = '';
+            while(/[a-zA-Z0-9]/.test(char)){
+                word += char;
+                char = input[++cursor];
+            }
+            if(word === 'dg' || word === 'dgpr'){
+                tokens.push({type: 'keyword', value: word});
+            }
+        }
     }
 }
 function compiler(input){
