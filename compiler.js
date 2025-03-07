@@ -40,10 +40,49 @@ function lexer(input){
     }
     return tokens;
 }
-function compiler(input){
-    const token = lexer(input);
-    // console.log(token); //to check how the tokens work
+
+function parser(tokens){
+    const ast = {
+        type: 'Program',
+        body: []
+    }
+    while(tokens.length>0){
+        let token = tokens.shift();
+        if (token.type === 'keyword' && token.value === 'dg'){
+            let declaration = {
+                type : 'Declaration',
+                name: tokens.shift().value,
+                value: null
+            }
+            //check for the assignment 
+            if (tokens[0].type === 'operator' && tokens[0].value === '='){
+                tokens.shift();
+                //parse the expression
+                let expression = '';
+                while(tokens.length > 0 && tokens[0].type !== 'keyword'){
+                    expression += tokens.shift().value;
+                }
+                declaration.value = expression.trim();
+            }
+            ast.body.push(declaration);
+        } else if (token.type === 'keyword' && token.value === 'dgpr') {
+            let printStatement = {
+                type: 'PrintStatement',
+                value: tokens.shift().value
+            }
+            ast.body.push(printStatement);
+        }
+    }
+    return ast;
 }
+
+function compiler(input){
+    const tokens = lexer(input);
+    // console.log(tokens); //to check how the tokens work
+    const ast = parser(tokens); //abstract syntax tree 
+    // console.log(ast) // to the abstract syntax tree 
+}
+
 const code = `
 dg x = 10
 dg y = 20
