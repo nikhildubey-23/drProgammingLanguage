@@ -76,17 +76,32 @@ function parser(tokens){
     return ast;
 }
 
+function codeGen(node){
+    switch(node.type){
+        case 'Program':return node.body.map(codeGen).join('\n')
+        case 'Declaration': return `const ${node.name} = ${node.value};`
+        case 'PrintStatement': return `console.log(${node.value});`
+    }
+}
+
 function compiler(input){
     const tokens = lexer(input);
     // console.log(tokens); //to check how the tokens work
     const ast = parser(tokens); //abstract syntax tree 
     // console.log(ast) // to the abstract syntax tree 
+    const executableCode = codeGen(ast)
+    //console.log(executableCode); //to see the generated code
+    return executableCode
 }
 
+function runner(input){
+    eval(input)
+}
 const code = `
 dg x = 10
 dg y = 20
 dg z = x + y
 dgpr z
 `
-compiler(code);
+const exec = compiler(code);
+runner(exec);
