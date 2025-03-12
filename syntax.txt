@@ -1,0 +1,38 @@
+dg x = 10
+dg y = 20
+dg z = x + y
+dgpr z
+
+if (x > y) {
+    dgpr x
+} else {
+    dgpr y
+}
+
+while (x < 100) {
+    dg x = x + 10
+    dgpr x
+}
+
+for (dg i = 0; i < 10; i = i + 1) {
+    dgpr i
+}
+
+do {
+    dg x = x + 10
+    dgpr x
+} while (x < 100)
+
+def add(a, b) {
+    dg result = a + b
+    return result
+}
+
+dg sum = add(10, 20)
+dgpr sum
+
+dg greeting = "Hello, World!"
+dgpr greeting
+
+dg arr = [1, 2, 3, 4, 5]
+dgpr arr[0]
